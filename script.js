@@ -27,6 +27,33 @@ window.addEventListener("scroll",()=>{
 
 
 
+// ================= SCROLL PROGRESS BAR =================
+
+
+const progressBar = document.getElementById("progressBar");
+
+
+function updateProgressBar(){
+
+    if(!progressBar) return;
+
+    const scrollTop = window.scrollY;
+
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+    const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+    progressBar.style.width = percent + "%";
+
+}
+
+
+window.addEventListener("scroll", updateProgressBar);
+
+updateProgressBar();
+
+
+
 
 
 
@@ -140,6 +167,8 @@ function startCounter(){
 
             let target = Number(counter.dataset.target);
 
+            let suffix = counter.dataset.suffix || "";
+
             let count = 0;
 
 
@@ -156,8 +185,7 @@ function startCounter(){
                 if(count < target){
 
 
-                    counter.innerText = Math.ceil(count) + 
-                    (target===98 ? "%" : "+");
+                    counter.innerText = Math.ceil(count) + suffix;
 
 
                     requestAnimationFrame(update);
@@ -166,8 +194,7 @@ function startCounter(){
                 }else{
 
 
-                    counter.innerText = target +
-                    (target===98 ? "%" : "+");
+                    counter.innerText = target + suffix;
 
 
                 }
@@ -397,3 +424,62 @@ document.querySelectorAll("img").forEach(img=>{
 
 
 });
+
+
+
+
+
+
+
+// ================= ACTIVE NAV LINK ON SCROLL =================
+
+
+const sectionsWithIds = document.querySelectorAll("section[id]");
+
+const navAnchorLinks = document.querySelectorAll(".nav-links a");
+
+
+function highlightActiveLink(){
+
+
+    let current = "";
+
+
+    sectionsWithIds.forEach(section=>{
+
+
+        const sectionTop = section.offsetTop - 130;
+
+
+        if(window.scrollY >= sectionTop){
+
+            current = section.getAttribute("id");
+
+        }
+
+
+    });
+
+
+    navAnchorLinks.forEach(link=>{
+
+
+        link.classList.remove("active-link");
+
+
+        if(link.getAttribute("href") === "#" + current){
+
+            link.classList.add("active-link");
+
+        }
+
+
+    });
+
+
+}
+
+
+window.addEventListener("scroll", highlightActiveLink);
+
+highlightActiveLink();
